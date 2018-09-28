@@ -1,7 +1,7 @@
 var request = require('request');
 
 var geocodeAddress = (address, callback) => {
-var encoadedAddress = encodeURIComponent(address);
+var encoadedAddress = encodeURIComponent(address); //  here encoadedAddress is an object then you have to place in between {}
 console.log(encoadedAddress);
 
 request({
@@ -11,22 +11,24 @@ request({
   //console.log(JSON.stringify(error, undefined, 2)); //To see total body of the object we are stringifying body AND undefined means currently we are not filter out any properties AND 2 meas number spcaces between property 
    // to print other things results[0].------your property name---
   if(error) {
-      callback('Unable to connect');
-      console.log('Unable to connect'); //system errors check
+      callback('Unable to connect');//system errors check
   } else if (body.status === 'ZERO_RESULTS') {
-      console.log('Unable to find that address.'); // server error check
+      callback('Unable to find that address.'); // server error check
   } else if (body.status === 'ok') {
       callback(undefined, {
           address: body.results[0].body.status// you can give any number of properties
-      })
+        //   lattitue: body.results[0].geometry.location.lat,
+        //   longitude: body.results[0].geometry.location.lng
+      });
       console.log(`status: ${body.status}`) //success message
   } 
 });
+}
 // }
 // module.exports = {
 //     geocodeAddress
 // } you can write like below also 
-module.exports = geocodeAddress;
+module.exports.geocodeAddress = geocodeAddress;
 
 
 // resopnse object give status code = 200 success, 404 Not found, 500 Server crash and all other details with big json data
